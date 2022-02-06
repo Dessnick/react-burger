@@ -6,9 +6,9 @@ import {
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const BurgerIngredient = ({ ingredientName, ingredientList }) => {
+const BurgerIngredient = ({ ingredientName, ingredientList, tabRef }) => {
   return (
-    <section>
+    <div ref={tabRef}>
       <h2 className="text text_type_main-medium">{ingredientName}</h2>
       <ul className={`${styles.ingredients_list} + pt-6 pb-10 pl-4 pr-4`}>
         {ingredientList.map((item) => {
@@ -37,7 +37,7 @@ const BurgerIngredient = ({ ingredientName, ingredientList }) => {
           );
         })}
       </ul>
-    </section>
+    </div>
   );
 };
 

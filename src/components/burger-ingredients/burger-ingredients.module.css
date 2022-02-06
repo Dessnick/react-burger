@@ -5,4 +5,5 @@
 
 .ingredients_container {
   max-height: 696px;
+  overflow-y: auto;
 }
