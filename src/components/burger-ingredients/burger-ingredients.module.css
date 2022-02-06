@@ -1,0 +1,39 @@
+.tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.ingredients_container {
+  max-height: 696px;
+}
+
+.ingredients_list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  margin: 0;
+  list-style: none;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  width: 240px;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.price_container {
+  display: flex;
+  justify-content: center;
+}
+
+.description {
+  text-align: center;
+}
