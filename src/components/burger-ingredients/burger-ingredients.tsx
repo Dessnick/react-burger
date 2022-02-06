@@ -7,6 +7,7 @@ import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import BurgerIngredient from '../burger-ingredient/burger-ingredient';
 
 import dataTypes from '../../utils/types';
 
@@ -31,32 +32,9 @@ const BurgerIngredients = ({ data }) => {
         </Tab>
       </div>
       <div className={`${styles.ingredients_container} + mt-10`}>
-        <h2 className="text text_type_main-medium">Булки</h2>
-        <ul className={`${styles.ingredients_list} + pt-6 pb-10 pl-4 pr-4`}>
-          {buns.map((ingredient) => {
-            return (
-              <li className={styles.item} key={ingredient._id}>
-                <img
-                  src={ingredient.image}
-                  alt={ingredient.name}
-                  className={`${styles.image} + pl-4 pr-4`}
-                />
-                <div className={`${styles.price_container} + pt-1 pb-1`}>
-                  <p className="text text_type_digits-default mr-2">
-                    {ingredient.price}
-                  </p>
-                  <CurrencyIcon type="primary" />
-                </div>
-                <p
-                  className={`${styles.description} + "text text_type_main-default mb-6"`}
-                >
-                  {ingredient.name}
-                </p>
-                <Counter count={1} size="default"></Counter>
-              </li>
-            );
-          })}
-        </ul>
+        <BurgerIngredient ingredientName="Булки" ingredientList={buns} />
+        <BurgerIngredient ingredientName="Соусы" ingredientList={sauces} />
+        <BurgerIngredient ingredientName="Начинки" ingredientList={mains} />
       </div>
     </section>
   );
