@@ -1,0 +1,24 @@
+.constructor {
+  max-height: 656px;
+}
+
+.constructor__item_locked {
+  display: flex;
+}
+
+.constructor__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 70%;
+  gap: 16px;
+}
+
+.constructor__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
