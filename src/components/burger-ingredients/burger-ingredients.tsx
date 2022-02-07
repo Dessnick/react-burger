@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import BurgerIngredient from '../burger-ingredient/burger-ingredient';
+import IngredientList from '../ingredient-list/ingredient-list';
 
 import dataTypes from '../../utils/types';
 
@@ -49,17 +49,17 @@ const BurgerIngredients = ({ data }) => {
         </Tab>
       </div>
       <div className={`${styles.ingredients_container} + mt-10 custom-scroll`}>
-        <BurgerIngredient
+        <IngredientList
           ingredientName="Булки"
           ingredientList={buns}
           tabRef={bunRef}
         />
-        <BurgerIngredient
+        <IngredientList
           ingredientName="Соусы"
           ingredientList={sauces}
           tabRef={sauceRef}
         />
-        <BurgerIngredient
+        <IngredientList
           ingredientName="Начинки"
           ingredientList={mains}
           tabRef={mainRef}

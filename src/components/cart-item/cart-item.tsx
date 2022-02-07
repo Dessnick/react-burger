@@ -1,8 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './cart-item.module.css';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CartCurrencyIcon from '../currency-icon/cart-currency-icon';
+
+import dataTypes from '../../utils/types';
 
 const CartItem = ({ cartItems }) => {
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price, 0);
@@ -22,6 +25,10 @@ const CartItem = ({ cartItems }) => {
       </Button>
     </div>
   );
+};
+
+CartItem.propTypes = {
+  cartItems: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
 };
 
 export default CartItem;

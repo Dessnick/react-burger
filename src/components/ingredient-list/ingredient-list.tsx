@@ -1,12 +1,15 @@
 import React from 'react';
-import styles from './burger-ingredient.module.css';
+import PropTypes from 'prop-types';
+import styles from './ingredient-list.module.css';
 
 import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const BurgerIngredient = ({ ingredientName, ingredientList, tabRef }) => {
+import dataTypes from '../../utils/types';
+
+const IngredientList = ({ ingredientName, ingredientList, tabRef }) => {
   return (
     <div ref={tabRef}>
       <h2 className="text text_type_main-medium">{ingredientName}</h2>
@@ -39,4 +42,8 @@ const BurgerIngredient = ({ ingredientName, ingredientList, tabRef }) => {
   );
 };
 
-export default BurgerIngredient;
+IngredientList.propTypes = {
+  ingredientList: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
+};
+
+export default IngredientList;
