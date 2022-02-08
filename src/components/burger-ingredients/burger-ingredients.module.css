@@ -1,0 +1,9 @@
+.tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.ingredients_container {
+  max-height: 696px;
+  overflow-y: auto;
+}
