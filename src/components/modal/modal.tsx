@@ -26,7 +26,7 @@ const Modal = (props) => {
       <div className={styles.modal}>
         {props.title && (
           <h2
-            className={`${styles.title} + text text_type_main-large mt-10 mb-3 ml-10 mr-10`}
+            className={`${styles.title} + text text_type_main-large mt-15 mb-5 ml-10 mr-10`}
           >
             {props.title}
           </h2>
