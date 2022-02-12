@@ -32,8 +32,8 @@ const CartItem = ({ cartItems }) => {
         Оформить заказ
       </Button>
       {stateModal && (
-        <Modal title={''} onClose={toggleStateModal}>
-          <OrderDetails />
+        <Modal title="" onClose={toggleStateModal}>
+          <OrderDetails orderID="" />
         </Modal>
       )}
     </div>
@@ -41,7 +41,7 @@ const CartItem = ({ cartItems }) => {
 };
 
 CartItem.propTypes = {
-  cartItems: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
+  cartItems: PropTypes.arrayOf(dataTypes),
 };
 
 export default CartItem;

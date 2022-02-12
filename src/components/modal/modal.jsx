@@ -41,8 +41,14 @@ const Modal = (props) => {
         {props.children}
       </div>
     </>,
-    document.getElementById('modals')!
+    document.getElementById('modals')
   );
+};
+
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default Modal;

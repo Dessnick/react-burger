@@ -9,16 +9,17 @@ import dataTypes from '../../utils/types';
 
 const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState('bun');
-  const buns = data.filter((ingredients) => ingredients.type === 'bun');
-  const sauces = data.filter((ingredients) => ingredients.type === 'sauce');
-  const mains = data.filter((ingredients) => ingredients.type === 'main');
 
   const bunRef = React.useRef(null);
   const sauceRef = React.useRef(null);
   const mainRef = React.useRef(null);
 
-  const handleTabClick = (e, ref) => {
-    setCurrent(e);
+  const buns = data.filter((ingredients) => ingredients.type === 'bun');
+  const sauces = data.filter((ingredients) => ingredients.type === 'sauce');
+  const mains = data.filter((ingredients) => ingredients.type === 'main');
+
+  const handleTabClick = (evt, ref) => {
+    setCurrent(evt);
     ref.current.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -29,21 +30,21 @@ const BurgerIngredients = ({ data }) => {
         <Tab
           value="bun"
           active={current === 'bun'}
-          onClick={(e) => handleTabClick(e, bunRef)}
+          onClick={(evt) => handleTabClick(evt, bunRef)}
         >
           Булки
         </Tab>
         <Tab
           value="sauce"
           active={current === 'sauce'}
-          onClick={(e) => handleTabClick(e, sauceRef)}
+          onClick={(evt) => handleTabClick(evt, sauceRef)}
         >
           Соусы
         </Tab>
         <Tab
           value="main"
           active={current === 'main'}
-          onClick={(e) => handleTabClick(e, mainRef)}
+          onClick={(evt) => handleTabClick(evt, mainRef)}
         >
           Начинки
         </Tab>
@@ -70,7 +71,7 @@ const BurgerIngredients = ({ data }) => {
 };
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
+  data: PropTypes.arrayOf(dataTypes),
 };
 
 export default BurgerIngredients;

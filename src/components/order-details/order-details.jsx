@@ -1,20 +1,19 @@
 import React from 'react';
 import styles from './order-details.module.css';
+import PropTypes from 'prop-types';
 
 import orderOK from '../../images/order-ok.gif';
 
-const OrderDetails = (props) => {
+const OrderDetails = ({ orderID }) => {
   return (
     <div className={`${styles['order-details']} + pt-30 pb-30 pl-10 pr-10`}>
       <h2
         className={`${styles['order-details__id']} + text text_type_digits-large
         `}
       >
-        {'034536'}
+        {orderID !== '' ? orderID : '034536'}
       </h2>
-      <p className="text text_type_main-medium mb-15">
-        {'Идентификатор заказа'}
-      </p>
+      <p className="text text_type_main-medium mb-15">Идентификатор заказа</p>
       <img
         src={orderOK}
         alt="OK"
@@ -28,6 +27,10 @@ const OrderDetails = (props) => {
       </p>
     </div>
   );
+};
+
+OrderDetails.propTypes = {
+  orderID: PropTypes.string.isRequired,
 };
 
 export default OrderDetails;

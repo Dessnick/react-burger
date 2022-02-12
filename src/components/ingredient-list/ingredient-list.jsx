@@ -53,7 +53,7 @@ const IngredientList = ({ ingredientName, ingredientList, tabRef }) => {
       </ul>
       {modalState && (
         <>
-          <Modal onClose={toggleModalState} title="Детали ингредиента">
+          <Modal title="Детали ингредиента" onClose={toggleModalState}>
             <IngredientDetails ingredient={modalState} />
           </Modal>
         </>
