@@ -7,15 +7,28 @@ import {
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+
 import dataTypes from '../../utils/types';
 
 const IngredientList = ({ ingredientName, ingredientList, tabRef }) => {
+  const [modalState, setModalState] = React.useState(false);
+
+  const toggleModalState = (ingredient) => {
+    setModalState(ingredient);
+  };
+
   return (
     <div ref={tabRef}>
       <h2 className="text text_type_main-medium">{ingredientName}</h2>
       <ul className={`${styles.ingredients_list} + pt-6 pb-10 pl-4 pr-4`}>
         {ingredientList.map((item) => (
-          <li className={styles.item} key={item._id}>
+          <li
+            className={styles.item}
+            key={item._id}
+            onClick={() => toggleModalState(item)}
+          >
             <a href="#" className={`${styles.link} + mb-8`}>
               <img
                 src={item.image}
@@ -38,12 +51,19 @@ const IngredientList = ({ ingredientName, ingredientList, tabRef }) => {
           </li>
         ))}
       </ul>
+      {modalState && (
+        <>
+          <Modal title="Детали ингредиента" onClose={toggleModalState}>
+            <IngredientDetails ingredient={modalState} />
+          </Modal>
+        </>
+      )}
     </div>
   );
 };
 
 IngredientList.propTypes = {
-  ingredientList: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
+  ingredientList: PropTypes.arrayOf(dataTypes),
 };
 
 export default IngredientList;

@@ -1,0 +1,22 @@
+.ingredient-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ingredient-details__image {
+}
+
+.nutrition-facts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.nutrition-facts-item {
+  text-align: center;
+}

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import {
   ConstructorElement,
   DragIcon,
-  Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import CartItem from '../cart-item/cart-item';
 
@@ -60,7 +59,7 @@ const BurgerConstructor = ({ data }) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
+  data: PropTypes.arrayOf(dataTypes).isRequired,
 };
 
 export default BurgerConstructor;
