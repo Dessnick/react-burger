@@ -17,12 +17,13 @@ const App = () => {
       setIsLoaded(false);
       setHasError(false);
       try {
-        const res = await fetch(baseUrl);
-        if (res.ok) {
-          const { data } = await res.json();
-          setData(data);
-          setIsLoaded(true);
+        const res = await fetch(baseUrl + 'ingredients');
+        if (!res.ok) {
+          throw new Error();
         }
+        const { data } = await res.json();
+        setData(data);
+        setIsLoaded(true);
       } catch (e) {
         console.log(e);
         setHasError(true);

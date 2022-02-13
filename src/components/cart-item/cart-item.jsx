@@ -41,7 +41,7 @@ const CartItem = ({ cartItems }) => {
 };
 
 CartItem.propTypes = {
-  cartItems: PropTypes.arrayOf(dataTypes),
+  cartItems: PropTypes.arrayOf(dataTypes).isRequired,
 };
 
 export default CartItem;
