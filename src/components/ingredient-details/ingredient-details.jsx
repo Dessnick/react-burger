@@ -3,7 +3,7 @@ import styles from './ingredient-details.module.css';
 
 import dataTypes from '../../utils/types';
 
-const IngredientDetails = ({ ingredient }) => {
+function IngredientDetails({ ingredient }) {
   return (
     <div className={`${styles['ingredient-details']} + pb-15`}>
       <img
@@ -48,7 +48,7 @@ const IngredientDetails = ({ ingredient }) => {
       </ul>
     </div>
   );
-};
+}
 
 IngredientDetails.propTypes = {
   ingredient: dataTypes.isRequired,

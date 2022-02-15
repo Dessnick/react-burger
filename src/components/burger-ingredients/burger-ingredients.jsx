@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './burger-ingredients.module.css';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientList from '../ingredient-list/ingredient-list';
 
+import styles from './burger-ingredients.module.css';
+
 import dataTypes from '../../utils/types';
 
-const BurgerIngredients = ({ data }) => {
+function BurgerIngredients({ data }) {
   const [current, setCurrent] = React.useState('bun');
 
   const bunRef = React.useRef(null);
@@ -68,7 +69,7 @@ const BurgerIngredients = ({ data }) => {
       </div>
     </section>
   );
-};
+}
 
 BurgerIngredients.propTypes = {
   data: PropTypes.arrayOf(dataTypes).isRequired,

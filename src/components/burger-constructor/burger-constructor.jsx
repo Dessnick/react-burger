@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
 
 import {
@@ -8,9 +7,11 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import CartItem from '../cart-item/cart-item';
 
+import styles from './burger-constructor.module.css';
+
 import dataTypes from '../../utils/types';
 
-const BurgerConstructor = ({ data }) => {
+function BurgerConstructor({ data }) {
   const ingredientsExceptBuns = data.filter(
     (ingredients) => ingredients.type !== 'bun'
   );
@@ -23,7 +24,7 @@ const BurgerConstructor = ({ data }) => {
       <div className={`${styles.constructor__item_locked} + mb-4 ml-8`}>
         <ConstructorElement
           type="top"
-          isLocked={true}
+          isLocked
           text={`${firstBun.name} (верх)`}
           price={firstBun.price}
           thumbnail={firstBun.image}
@@ -33,6 +34,7 @@ const BurgerConstructor = ({ data }) => {
         {ingredientsExceptBuns.map((ingredient) => (
           <li
             className={`${styles.constructor__item} + pl-2 pr-2`}
+            // eslint-disable-next-line no-underscore-dangle
             key={ingredient._id}
           >
             <DragIcon type="primary" />
@@ -47,7 +49,7 @@ const BurgerConstructor = ({ data }) => {
       <div className={`${styles.constructor__item_locked} + mt-4 ml-8`}>
         <ConstructorElement
           type="bottom"
-          isLocked={true}
+          isLocked
           text={`${firstBun.name} (низ)`}
           price={firstBun.price}
           thumbnail={firstBun.image}
@@ -56,7 +58,7 @@ const BurgerConstructor = ({ data }) => {
       <CartItem cartItems={cartItems} />
     </section>
   );
-};
+}
 
 BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(dataTypes).isRequired,

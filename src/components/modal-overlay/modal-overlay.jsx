@@ -1,17 +1,22 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+
 import React from 'react';
-import styles from './modal-overlay.module.css';
 import PropTypes from 'prop-types';
 
-const ModalOverlay = ({ onClose }) => {
+import styles from './modal-overlay.module.css';
+
+function ModalOverlay({ onClose }) {
   return (
     <div
       className={styles.overlay}
       onClick={() => {
         onClose(false);
       }}
-    ></div>
+    />
   );
-};
+}
 
 ModalOverlay.propTypes = {
   onClose: PropTypes.func.isRequired,

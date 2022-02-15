@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './cart-item.module.css';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CartCurrencyIcon from '../currency-icon/cart-currency-icon';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
+import styles from './cart-item.module.css';
+
 import dataTypes from '../../utils/types';
 
-const CartItem = ({ cartItems }) => {
+function CartItem({ cartItems }) {
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price, 0);
 
   const [stateModal, setStateModal] = React.useState(false);
@@ -38,7 +39,7 @@ const CartItem = ({ cartItems }) => {
       )}
     </div>
   );
-};
+}
 
 CartItem.propTypes = {
   cartItems: PropTypes.arrayOf(dataTypes).isRequired,

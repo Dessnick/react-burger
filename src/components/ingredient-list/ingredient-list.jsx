@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './ingredient-list.module.css';
 
 import {
   CurrencyIcon,
@@ -10,9 +12,11 @@ import {
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
+import styles from './ingredient-list.module.css';
+
 import dataTypes from '../../utils/types';
 
-const IngredientList = ({ ingredientName, ingredientList, tabRef }) => {
+function IngredientList({ ingredientName, ingredientList, tabRef }) {
   const [modalState, setModalState] = React.useState(false);
 
   const toggleModalState = (ingredient) => {
@@ -26,6 +30,7 @@ const IngredientList = ({ ingredientName, ingredientList, tabRef }) => {
         {ingredientList.map((item) => (
           <li
             className={styles.item}
+            // eslint-disable-next-line no-underscore-dangle
             key={item._id}
             onClick={() => toggleModalState(item)}
           >
@@ -46,24 +51,24 @@ const IngredientList = ({ ingredientName, ingredientList, tabRef }) => {
               >
                 {item.name}
               </p>
-              <Counter count={1} size="default"></Counter>
+              <Counter count={1} size="default" />
             </a>
           </li>
         ))}
       </ul>
       {modalState && (
-        <>
-          <Modal title="Детали ингредиента" onClose={toggleModalState}>
-            <IngredientDetails ingredient={modalState} />
-          </Modal>
-        </>
+        <Modal title="Детали ингредиента" onClose={toggleModalState}>
+          <IngredientDetails ingredient={modalState} />
+        </Modal>
       )}
     </div>
   );
-};
+}
 
 IngredientList.propTypes = {
-  ingredientList: PropTypes.arrayOf(dataTypes),
+  ingredientName: PropTypes.string.isRequired,
+  ingredientList: PropTypes.arrayOf(dataTypes).isRequired,
+  tabRef: PropTypes.func.isRequired,
 };
 
 export default IngredientList;

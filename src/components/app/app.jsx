@@ -7,7 +7,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 
 import baseUrl from '../../utils/data';
 
-const App = () => {
+function App() {
   const [data, setData] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [hasError, setHasError] = React.useState(false);
@@ -17,15 +17,17 @@ const App = () => {
       setIsLoaded(false);
       setHasError(false);
       try {
-        const res = await fetch(baseUrl + 'ingredients');
+        const res = await fetch(`${baseUrl}ingredients`);
         if (!res.ok) {
           throw new Error();
         }
+        // eslint-disable-next-line no-shadow
         const { data } = await res.json();
         setData(data);
         setIsLoaded(true);
       } catch (e) {
-        console.log(e);
+        // eslint-disable-next-line no-console
+        console.error(e);
         setHasError(true);
         setIsLoaded(false);
       }
@@ -46,6 +48,6 @@ const App = () => {
       )}
     </>
   );
-};
+}
 
 export default App;
