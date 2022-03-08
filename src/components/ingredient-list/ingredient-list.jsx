@@ -68,7 +68,12 @@ function IngredientList({ ingredientName, ingredientList, tabRef }) {
 IngredientList.propTypes = {
   ingredientName: PropTypes.string.isRequired,
   ingredientList: PropTypes.arrayOf(dataTypes).isRequired,
-  tabRef: PropTypes.func.isRequired,
+  tabRef: PropTypes.oneOfType([
+    // Either a function
+    PropTypes.func,
+    // Or the instance of a DOM native element (see the note about SSR)
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]).isRequired,
 };
 
 export default IngredientList;

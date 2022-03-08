@@ -7,3 +7,7 @@
 .order-details__order-ok {
   height: 152px;
 }
+
+.order-name {
+  text-align: center;
+}
