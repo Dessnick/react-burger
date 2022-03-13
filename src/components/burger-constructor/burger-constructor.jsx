@@ -1,26 +1,53 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
+
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+// import CartItem from '../cart-item/cart-item';
+import ConstructorItem from '../constructor-item/constructor-item';
 
 import {
-  ConstructorElement,
-  DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import CartItem from '../cart-item/cart-item';
-
-import BurgerConstructorContext from '../../services/burgerConstructorContext';
+  ingredientsSelector,
+  addIngredientToCart,
+  removeIngredientFromCart,
+} from '../../services/slices/ingredientsSlice';
 
 import styles from './burger-constructor.module.css';
 
 function BurgerConstructor() {
-  const { state } = React.useContext(BurgerConstructorContext);
-  const { data } = state;
+  const dispatch = useDispatch();
+  const { ingredients } = useSelector(ingredientsSelector);
 
-  const ingredientsExceptBuns = data.filter((item) => item.type !== 'bun');
-  const bun = data.find((item) => item.type === 'bun');
+  const ingredientsExceptBuns = ingredients.filter(
+    (item) => item.type !== 'bun'
+  );
+  const bun = ingredients.find((item) => item.type === 'bun');
 
-  const cartItems = [].concat(bun, ingredientsExceptBuns, bun);
+  const [{ canDrop, isOver }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(item) {
+      if (item.type === 'bun') {
+        dispatch(removeIngredientFromCart(item));
+        dispatch(addIngredientToCart(item));
+      } else {
+        dispatch(addIngredientToCart(item));
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
 
   return (
-    <section className={`${styles.constructor} + mt-25`}>
+    <section
+      className={`${styles.constructor} + mt-25`}
+      ref={dropTarget}
+      style={{
+        backgroundColor:
+          canDrop && isOver ? 'rgba(74, 74, 150, .1' : 'transparent',
+      }}
+    >
       <div className={`${styles.constructor__item_locked} + mb-4 ml-8`}>
         {bun && (
           <ConstructorElement
@@ -33,20 +60,10 @@ function BurgerConstructor() {
         )}
       </div>
       <ul className={`${styles.constructor__list} custom-scroll`}>
-        {ingredientsExceptBuns.map((ingredient) => (
-          <li
-            className={`${styles.constructor__item} + pl-2 pr-2`}
-            // eslint-disable-next-line no-underscore-dangle
-            key={ingredient._id}
-          >
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={ingredient.name}
-              price={ingredient.price}
-              thumbnail={ingredient.image}
-            />
-          </li>
-        ))}
+        {ingredientsExceptBuns.length > 0 &&
+          ingredientsExceptBuns.map((item, index) => (
+            <ConstructorItem ingredient={item} index={index} key={item.id} />
+          ))}
       </ul>
       <div className={`${styles.constructor__item_locked} + mt-4 ml-8`}>
         {bun && (
@@ -59,7 +76,7 @@ function BurgerConstructor() {
           />
         )}
       </div>
-      <CartItem cartItems={cartItems} />
+      {/* <CartItem cartItems={cartItems} /> */}
     </section>
   );
 }

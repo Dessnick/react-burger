@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 import baseUrl from '../../utils/data';
 
 const initialState = {
@@ -61,6 +61,40 @@ const ingredientsSlice = createSlice({
       state.ingredientDetails = null;
       state.ingredientDetailsModalIsActive = false;
     },
+    addIngredientToCart: {
+      reducer: (state, action) => {
+        state.ingredients.push(action.payload);
+      },
+      prepare: (item) => {
+        const id = nanoid();
+        return { payload: { ...item, id } };
+      },
+    },
+    removeIngredientFromCart: (state, action) => {
+      if (action.payload.type === 'bun') {
+        state.ingredients = state.ingredients.filter(
+          (item) => item.type !== 'bun'
+        );
+      } else {
+        state.ingredients = state.ingredients.filter(
+          (item) => item.id !== action.payload.id
+        );
+      }
+    },
+    dragIngredients: (state, action) => {
+      const modifyingIngredients = state.ingredients.filter(
+        (item) => item.type !== 'bun'
+      );
+      // eslint-disable-next-line prefer-destructuring
+      modifyingIngredients[action.payload.drag] = modifyingIngredients.splice(
+        action.payload.hover,
+        1,
+        modifyingIngredients[action.payload.drag]
+      )[0];
+      state.ingredients = modifyingIngredients.concat(
+        state.ingredients.filter((i) => i.type === 'bun')
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -76,22 +110,21 @@ const ingredientsSlice = createSlice({
         state.isLoaded = false;
         state.hasError = true;
       })
-      // .addCase(fetchOrder.pending, (state) => {
-      //   state.isLoaded = false;
-      // })
-      // .addCase(fetchOrder.fulfilled, (state, { payload }) => {
-      //   state.isLoaded = true;
-      //   state.hasError = false;
-      //   state.orderId = payload.order.number;
-      //   state.orderName = payload.name;
-      //   state.orderModal = true;
-      // })
-      // .addCase(fetchOrder.rejected, (state, { payload }) => {
-      //   state.isLoaded = false;
-      //   state.hasError = true;
-      //   state.orderId = 0;
-      //   state.orderName = '';
-      // })
+      .addCase(fetchOrder.pending, (state) => {
+        state.isLoaded = false;
+      })
+      .addCase(fetchOrder.fulfilled, (state, { payload }) => {
+        state.isLoaded = true;
+        state.hasError = false;
+        state.orderId = payload.order.number;
+        state.orderName = payload.name;
+      })
+      .addCase(fetchOrder.rejected, (state, { payload }) => {
+        state.isLoaded = false;
+        state.hasError = true;
+        state.orderId = 0;
+        state.orderName = '';
+      })
       .addDefaultCase(() => {});
   },
 });
@@ -99,11 +132,11 @@ const ingredientsSlice = createSlice({
 export const ingredientsSelector = (state) => state.ingredients.ingredients;
 
 export const {
-  // gettingIngredients,
-  // gettingIngredientsSuccess,
-  // gettingIngredientsError,
   showIngredientDetails,
   hideIngredientDetails,
+  addIngredientToCart,
+  removeIngredientFromCart,
+  dragIngredients,
 } = ingredientsSlice.actions;
 
 export const ingredientsSliceReducer = ingredientsSlice.reducer;
