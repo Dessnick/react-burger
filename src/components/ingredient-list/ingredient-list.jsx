@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
@@ -12,16 +13,21 @@ import {
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
+import {
+  ingredientsSelector,
+  showIngredientDetails,
+  hideIngredientDetails,
+} from '../../services/slices/ingredientsSlice';
+
 import styles from './ingredient-list.module.css';
 
 import dataTypes from '../../utils/types';
 
 function IngredientList({ ingredientName, ingredientList, tabRef }) {
-  const [modalState, setModalState] = React.useState(false);
+  const { ingredientDetails, ingredientDetailsModalIsActive } =
+    useSelector(ingredientsSelector);
 
-  const toggleModalState = (ingredient) => {
-    setModalState(ingredient);
-  };
+  const dispatch = useDispatch();
 
   return (
     <div ref={tabRef}>
@@ -32,7 +38,7 @@ function IngredientList({ ingredientName, ingredientList, tabRef }) {
             className={styles.item}
             // eslint-disable-next-line no-underscore-dangle
             key={item._id}
-            onClick={() => toggleModalState(item)}
+            onClick={() => dispatch(showIngredientDetails(item))}
           >
             <a href="#" className={`${styles.link} + mb-8`}>
               <img
@@ -56,9 +62,12 @@ function IngredientList({ ingredientName, ingredientList, tabRef }) {
           </li>
         ))}
       </ul>
-      {modalState && (
-        <Modal title="Детали ингредиента" onClose={toggleModalState}>
-          <IngredientDetails ingredient={modalState} />
+      {ingredientDetailsModalIsActive && (
+        <Modal
+          title="Детали ингредиента"
+          onClose={() => dispatch(hideIngredientDetails())}
+        >
+          <IngredientDetails ingredient={ingredientDetails} />
         </Modal>
       )}
     </div>
