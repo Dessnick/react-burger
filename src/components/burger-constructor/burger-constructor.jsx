@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-// import CartItem from '../cart-item/cart-item';
+import CartItem from '../cart-item/cart-item';
 import ConstructorItem from '../constructor-item/constructor-item';
 
 import {
@@ -76,7 +76,7 @@ function BurgerConstructor() {
           />
         )}
       </div>
-      {/* <CartItem cartItems={cartItems} /> */}
+      <CartItem />
     </section>
   );
 }

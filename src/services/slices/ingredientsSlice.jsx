@@ -12,6 +12,9 @@ const initialState = {
   hasError: false,
   ingredientDetails: null,
   ingredientDetailsModalIsActive: false,
+  cartItemModalIsActive: false,
+  orderID: 0,
+  orderName: '',
 };
 
 export const fetchIngredients = createAsyncThunk(
@@ -97,6 +100,9 @@ const ingredientsSlice = createSlice({
         state.cartIngredients.filter((item) => item.type === 'bun')
       );
     },
+    closeOrderDetails: (state) => {
+      state.cartItemModalIsActive = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -118,13 +124,14 @@ const ingredientsSlice = createSlice({
       .addCase(fetchOrder.fulfilled, (state, { payload }) => {
         state.isLoaded = true;
         state.hasError = false;
-        state.orderId = payload.order.number;
+        state.orderID = payload.order.number;
         state.orderName = payload.name;
+        state.cartItemModalIsActive = true;
       })
       .addCase(fetchOrder.rejected, (state, { payload }) => {
         state.isLoaded = false;
         state.hasError = true;
-        state.orderId = 0;
+        state.orderID = 0;
         state.orderName = '';
       })
       .addDefaultCase(() => {});
@@ -139,6 +146,7 @@ export const {
   addIngredientToCart,
   removeIngredientFromCart,
   dragIngredients,
+  closeOrderDetails,
 } = ingredientsSlice.actions;
 
 export const ingredientsSliceReducer = ingredientsSlice.reducer;
