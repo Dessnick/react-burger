@@ -16,12 +16,12 @@ import styles from './burger-constructor.module.css';
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector(ingredientsSelector);
+  const { cartIngredients } = useSelector(ingredientsSelector);
 
-  const ingredientsExceptBuns = ingredients.filter(
+  const ingredientsExceptBuns = cartIngredients.filter(
     (item) => item.type !== 'bun'
   );
-  const bun = ingredients.find((item) => item.type === 'bun');
+  const bun = cartIngredients.find((item) => item.type === 'bun');
 
   const [{ canDrop, isOver }, dropTarget] = useDrop({
     accept: 'ingredient',

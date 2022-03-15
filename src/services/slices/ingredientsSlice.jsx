@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
@@ -5,6 +6,7 @@ import baseUrl from '../../utils/data';
 
 const initialState = {
   ingredients: [],
+  cartIngredients: [],
   totalPrice: 0,
   isLoaded: false,
   hasError: false,
@@ -62,8 +64,8 @@ const ingredientsSlice = createSlice({
       state.ingredientDetailsModalIsActive = false;
     },
     addIngredientToCart: {
-      reducer: (state, action) => {
-        state.ingredients.push(action.payload);
+      reducer: (state, { payload }) => {
+        state.cartIngredients.push(payload);
       },
       prepare: (item) => {
         const id = nanoid();
@@ -72,17 +74,17 @@ const ingredientsSlice = createSlice({
     },
     removeIngredientFromCart: (state, action) => {
       if (action.payload.type === 'bun') {
-        state.ingredients = state.ingredients.filter(
+        state.cartIngredients = state.cartIngredients.filter(
           (item) => item.type !== 'bun'
         );
       } else {
-        state.ingredients = state.ingredients.filter(
+        state.cartIngredients = [...state.cartIngredients].filter(
           (item) => item.id !== action.payload.id
         );
       }
     },
     dragIngredients: (state, action) => {
-      const modifyingIngredients = state.ingredients.filter(
+      const modifyingIngredients = state.cartIngredients.filter(
         (item) => item.type !== 'bun'
       );
       // eslint-disable-next-line prefer-destructuring
@@ -91,8 +93,8 @@ const ingredientsSlice = createSlice({
         1,
         modifyingIngredients[action.payload.drag]
       )[0];
-      state.ingredients = modifyingIngredients.concat(
-        state.ingredients.filter((i) => i.type === 'bun')
+      state.cartIngredients = modifyingIngredients.concat(
+        state.cartIngredients.filter((item) => item.type === 'bun')
       );
     },
   },
