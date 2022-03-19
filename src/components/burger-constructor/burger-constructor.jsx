@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   ConstructorElement,
@@ -7,28 +6,31 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import CartItem from '../cart-item/cart-item';
 
+import BurgerConstructorContext from '../../services/burgerConstructorContext';
+
 import styles from './burger-constructor.module.css';
 
-import dataTypes from '../../utils/types';
+function BurgerConstructor() {
+  const { state } = React.useContext(BurgerConstructorContext);
+  const { data } = state;
 
-function BurgerConstructor({ data }) {
-  const ingredientsExceptBuns = data.filter(
-    (ingredients) => ingredients.type !== 'bun'
-  );
-  const firstBun = data[0];
+  const ingredientsExceptBuns = data.filter((item) => item.type !== 'bun');
+  const bun = data.find((item) => item.type === 'bun');
 
-  const cartItems = [].concat(firstBun, ingredientsExceptBuns, firstBun);
+  const cartItems = [].concat(bun, ingredientsExceptBuns, bun);
 
   return (
     <section className={`${styles.constructor} + mt-25`}>
       <div className={`${styles.constructor__item_locked} + mb-4 ml-8`}>
-        <ConstructorElement
-          type="top"
-          isLocked
-          text={`${firstBun.name} (верх)`}
-          price={firstBun.price}
-          thumbnail={firstBun.image}
-        />
+        {bun && (
+          <ConstructorElement
+            type="top"
+            isLocked
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
+        )}
       </div>
       <ul className={`${styles.constructor__list} custom-scroll`}>
         {ingredientsExceptBuns.map((ingredient) => (
@@ -47,21 +49,19 @@ function BurgerConstructor({ data }) {
         ))}
       </ul>
       <div className={`${styles.constructor__item_locked} + mt-4 ml-8`}>
-        <ConstructorElement
-          type="bottom"
-          isLocked
-          text={`${firstBun.name} (низ)`}
-          price={firstBun.price}
-          thumbnail={firstBun.image}
-        />
+        {bun && (
+          <ConstructorElement
+            type="bottom"
+            isLocked
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
+        )}
       </div>
       <CartItem cartItems={cartItems} />
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataTypes).isRequired,
-};
 
 export default BurgerConstructor;
