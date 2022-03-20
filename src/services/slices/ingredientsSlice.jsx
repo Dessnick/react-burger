@@ -118,8 +118,12 @@ const ingredientsSlice = createSlice({
         state.isLoaded = false;
         state.hasError = true;
       })
-      .addCase(fetchOrder.pending, (state) => {
-        state.isLoaded = false;
+      .addCase(fetchOrder.pending, (state, { payload }) => {
+        state.isLoaded = true;
+        state.hasError = false;
+        state.orderID = 0;
+        state.cartItemModalIsActive = true;
+        state.orderName = 'Отправляем заказ на кухню. Пожалуйста, подождите...';
       })
       .addCase(fetchOrder.fulfilled, (state, { payload }) => {
         state.isLoaded = true;
