@@ -1,25 +1,25 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientList from '../ingredient-list/ingredient-list';
 
-import BurgerConstructorContext from '../../services/burgerConstructorContext';
+import { ingredientsSelector } from '../../services/slices/ingredientsSlice';
 
 import styles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
-  const { state } = React.useContext(BurgerConstructorContext);
-  const { data } = state;
-
   const [current, setCurrent] = React.useState('bun');
 
   const bunRef = React.useRef(null);
   const sauceRef = React.useRef(null);
   const mainRef = React.useRef(null);
 
-  const buns = data.filter((ingredients) => ingredients.type === 'bun');
-  const sauces = data.filter((ingredients) => ingredients.type === 'sauce');
-  const mains = data.filter((ingredients) => ingredients.type === 'main');
+  const { ingredients } = useSelector(ingredientsSelector);
+
+  const buns = ingredients.filter((items) => items.type === 'bun');
+  const sauces = ingredients.filter((items) => items.type === 'sauce');
+  const mains = ingredients.filter((items) => items.type === 'main');
 
   const handleTabClick = (evt, ref) => {
     setCurrent(evt);
@@ -27,7 +27,7 @@ function BurgerIngredients() {
   };
 
   return (
-    data.length && (
+    ingredients.length && (
       <section>
         <h1 className="text text_type_main-large mt-10 mb-5">
           Соберите бургер
