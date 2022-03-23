@@ -24,3 +24,7 @@ You will also see any lint errors in the console.
 - [ESLint Airbnb](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
 - Redux, Redux Thunk, Redux DnD, Redux Toolkit
 - Реализовано перетаскивание ингридиентов между компонентами BurgerIngredients и BurgerConstructor.
+
+## Ссылки
+
+[GitHub Pages](https://dessnick.github.io/react-burger/)
