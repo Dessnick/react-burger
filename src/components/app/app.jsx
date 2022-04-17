@@ -1,22 +1,15 @@
 import React from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useSelector, useDispatch } from 'react-redux';
-// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import {
-  ingredientsSelector,
-  fetchIngredients,
-} from '../../services/slices/ingredientsSlice';
+import { useDispatch } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-
-import styles from './app.module.css';
+import { Home, Login, Register, ForgotPassword } from '../../pages';
 
 function App() {
   const dispatch = useDispatch();
-  const { isLoaded, hasError } = useSelector(ingredientsSelector);
+
   React.useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
@@ -24,15 +17,22 @@ function App() {
   return (
     <>
       <AppHeader />
-      {hasError && 'Ошибка загрузки'}
-      {isLoaded && (
-        <main className={styles.content}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      )}
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <Home />
+          </Route>
+          <Route path="/login" exact>
+            <Login />
+          </Route>
+          <Route path="/login" exact>
+            <Register />
+          </Route>
+          <Route path="/forgot-password" exact>
+            <ForgotPassword />
+          </Route>
+        </Switch>
+      </Router>
     </>
   );
 }
