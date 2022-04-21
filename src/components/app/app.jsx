@@ -25,7 +25,7 @@ function App() {
           <Route path="/login" exact>
             <Login />
           </Route>
-          <Route path="/login" exact>
+          <Route path="/register" exact>
             <Register />
           </Route>
           <Route path="/forgot-password" exact>
