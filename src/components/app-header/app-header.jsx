@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useLocation, NavLink } from 'react-router-dom';
 
 import {
   BurgerIcon,
@@ -10,38 +11,62 @@ import {
 import styles from './app-header.module.css';
 
 function AppHeader() {
+  const location = useLocation();
+
+  const changeProfileIcon = () =>
+    location.pathname !== '/profile' && location.pathname !== '/profile/orders'
+      ? 'secondary'
+      : 'primary';
+
   return (
     <header className={styles.header}>
       <nav className={`${styles.navigation} + pt-4 pb-4`}>
         <ul className={styles.list}>
           <li className={`${styles.list__item} + pt-4 pb-4 pl-5 pr-5`}>
-            <a href="#section" target="_blank" className={styles.link}>
-              <BurgerIcon type="primary" />
+            <NavLink
+              className={`${styles.link} + mr-2`}
+              to="/"
+              exact
+              activeClassName={styles.link_active}
+            >
+              <BurgerIcon
+                type={location.pathname === '/' ? 'primary' : 'secondary'}
+              />
               <span className="text text_type_main-default ml-2">
                 Конструктор
               </span>
-            </a>
+            </NavLink>
           </li>
           <li className={`${styles.list__item} + pt-4 pb-4 pl-5 pr-5`}>
-            <a href="#section" target="_blank" className={styles.link}>
+            <a href="#section" className={styles.link}>
               <ListIcon type="secondary" />
-              <span className="text text_type_main-default text_color_inactive ml-2">
+              <span className="text text_type_main-default ml-2">
                 Лента заказов
               </span>
             </a>
           </li>
         </ul>
-        <a href="#section" target="_blank" className={styles.logo}>
-          <Logo />
-        </a>
-        <div className={`${styles.profile} + pt-4 pb-4 pl-5 pr-5`}>
-          <a href="#section" target="_blank" className={styles.link}>
-            <ProfileIcon type="secondary" />
-            <span className="text text_type_main-default text_color_inactive ml-2">
-              Личный кабинет
-            </span>
-          </a>
-        </div>
+        <Link to="/">
+          <div className={styles.link}>
+            <Logo />
+          </div>
+        </Link>
+        <ul className={styles.list}>
+          <li className={`${styles.list__item} + pt-4 pb-4 pl-5 pr-5`}>
+            <div className={`${styles.profile} + pt-4 pb-4 pl-5 pr-5`}>
+              <NavLink
+                className={styles.link}
+                to="/profile"
+                activeClassName={styles.link_active}
+              >
+                <ProfileIcon type={changeProfileIcon()} />
+                <span className="text text_type_main-default ml-2">
+                  Личный кабинет
+                </span>
+              </NavLink>
+            </div>
+          </li>
+        </ul>
       </nav>
     </header>
   );

@@ -4,6 +4,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
+import { Link, useLocation } from 'react-router-dom';
 
 import {
   CurrencyIcon,
@@ -19,6 +20,7 @@ import styles from './burger-ingredient.module.css';
 
 function BurgerIngredient({ ingredient }) {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { cartIngredients } = useSelector(ingredientsSelector);
   const count = cartIngredients.filter(
@@ -34,10 +36,17 @@ function BurgerIngredient({ ingredient }) {
   return (
     <li
       className={styles.item}
-      ref={dragRef}
       onClick={() => dispatch(showIngredientDetails(ingredient))}
     >
-      <a href="#" className={`${styles.link} + mb-8`}>
+      <Link
+        className={`${styles.link} + mb-8`}
+        ref={dragRef}
+        to={{
+          // eslint-disable-next-line no-underscore-dangle
+          pathname: `/ingredients/${ingredient._id}`,
+          state: { background: location },
+        }}
+      >
         <img
           src={ingredient.image}
           alt={ingredient.name}
@@ -53,7 +62,7 @@ function BurgerIngredient({ ingredient }) {
           {ingredient.name}
         </p>
         <Counter count={count} size="default" />
-      </a>
+      </Link>
     </li>
   );
 }

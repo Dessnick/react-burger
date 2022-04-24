@@ -1,19 +1,31 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import {
   Input,
   PasswordInput,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { authSelector, resetPassword } from '../../services/slices/auth';
 
 import styles from './reset-password.module.css';
 
 function ResetPassword() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { forgotAndResetPass, isLoggedIn, preLogged, error } =
+    useSelector(authSelector);
+
   const [formData, setformData] = React.useState({
     password: '',
     token: '',
   });
+
+  const pathToRedirect = () => {
+    history.push('/login');
+  };
 
   const onChange = (evt) => {
     setformData({
@@ -24,7 +36,17 @@ function ResetPassword() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    dispatch(resetPassword(formData));
+    if (forgotAndResetPass) setTimeout(pathToRedirect, 2000);
   };
+
+  if (isLoggedIn && preLogged) {
+    return <Redirect to="/login" />;
+  }
+
+  if (!isLoggedIn && !forgotAndResetPass) {
+    return <Redirect to="/forgot-password" />;
+  }
 
   return (
     <div className={styles.content}>
@@ -46,6 +68,11 @@ function ResetPassword() {
           errorText="Ошибка"
           size="default"
         />
+        {error && (
+          <span className={`${styles.error} text_type_main-medium mb-3`}>
+            {error}
+          </span>
+        )}
         <Button type="primary" size="medium">
           Сохранить
         </Button>
