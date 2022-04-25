@@ -6,6 +6,7 @@ import Profile from './profile/profile';
 import Register from './register/register';
 import ResetPassword from './reset-password/reset-password';
 import IngredientPage from './ingredient-page/ingredient-page';
+import FeedPage from './feed/feed';
 
 export {
   ForgotPassword,
@@ -16,4 +17,5 @@ export {
   Register,
   ResetPassword,
   IngredientPage,
+  FeedPage,
 };

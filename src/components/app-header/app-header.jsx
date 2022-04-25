@@ -38,12 +38,18 @@ function AppHeader() {
             </NavLink>
           </li>
           <li className={`${styles.list__item} + pt-4 pb-4 pl-5 pr-5`}>
-            <a href="#section" className={styles.link}>
-              <ListIcon type="secondary" />
+            <NavLink
+              className={styles.link}
+              to="/feed"
+              activeClassName={styles.link_active}
+            >
+              <ListIcon
+                type={location.pathname === '/feed' ? 'primary' : 'secondary'}
+              />
               <span className="text text_type_main-default ml-2">
                 Лента заказов
               </span>
-            </a>
+            </NavLink>
           </li>
         </ul>
         <Link to="/">

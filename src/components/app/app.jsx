@@ -13,6 +13,7 @@ import {
   ForgotPassword,
   ResetPassword,
   IngredientPage,
+  FeedPage,
 } from '../../pages';
 import Modal from '../modal/modal';
 import ProtectedRoute from '../protected-route/protected-route';
@@ -75,6 +76,9 @@ function App() {
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact>
           <IngredientPage />
+        </Route>
+        <Route path="/feed" exact>
+          <FeedPage />
         </Route>
       </Switch>
 
