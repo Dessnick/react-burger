@@ -1,0 +1,32 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 80px;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list__item {
+  display: flex;
+  min-width: 320px;
+  min-height: 64px;
+}
+
+.link {
+  text-decoration: none;
+  text-align: left;
+  color: #8585ad;
+}
+
+.link_active {
+  color: #f2f2f3;
+}
+
+.caption {
+  max-width: 320px;
+}

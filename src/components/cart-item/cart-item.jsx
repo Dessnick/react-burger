@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import CartCurrencyIcon from '../currency-icon/cart-currency-icon';
@@ -11,32 +12,56 @@ import {
   ingredientsSelector,
   closeOrderDetails,
 } from '../../services/slices/ingredientsSlice';
+import { authSelector } from '../../services/slices/auth';
 
 import styles from './cart-item.module.css';
 
 function CartItem() {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const { cartIngredients, cartItemModalIsActive, orderID, orderName } =
     useSelector(ingredientsSelector);
+  const { isLoggedIn } = useSelector(authSelector);
 
-  const [totalPrice, setTotalPrice] = React.useState(0);
+  const pushOrder = () => {
+    if (!isLoggedIn) {
+      history.replace({ pathname: '/login' });
+    } else {
+      dispatch(fetchOrder(cartIngredients));
+    }
+  };
 
-  React.useEffect(() => {
-    const getTotalPrice = () => {
-      let result = 0;
-      if (cartIngredients.length > 0) {
-        result =
-          cartIngredients
-            .filter((item) => item.type !== 'bun')
-            .reduce((acc, item) => acc + item.price, 0) +
-          (cartIngredients.some((item) => item.type === 'bun')
-            ? cartIngredients.find((item) => item.type === 'bun').price * 2
-            : 0);
-      }
-      setTotalPrice(result);
-    };
+  // React.useEffect(() => {
+  //   const getTotalPrice = () => {
+  //     let result = 0;
+  //     if (cartIngredients.length > 0) {
+  //       result =
+  //         cartIngredients
+  //           .filter((item) => item.type !== 'bun')
+  //           .reduce((acc, item) => acc + item.price, 0) +
+  //         (cartIngredients.some((item) => item.type === 'bun')
+  //           ? cartIngredients.find((item) => item.type === 'bun').price * 2
+  //           : 0);
+  //     }
+  //     setTotalPrice(result);
+  //   };
 
-    getTotalPrice();
+  //   getTotalPrice();
+  // }, [cartIngredients]);
+
+  const totalPrice = React.useMemo(() => {
+    let result = 0;
+    if (cartIngredients.length > 0) {
+      result =
+        cartIngredients
+          .filter((item) => item.type !== 'bun')
+          .reduce((acc, item) => acc + item.price, 0) +
+        (cartIngredients.some((item) => item.type === 'bun')
+          ? cartIngredients.find((item) => item.type === 'bun').price * 2
+          : 0);
+    }
+    return result;
   }, [cartIngredients]);
 
   return (
@@ -49,13 +74,7 @@ function CartItem() {
         </span>
         <CartCurrencyIcon />
       </div>
-      <Button
-        type="primary"
-        size="medium"
-        onClick={() => {
-          dispatch(fetchOrder(cartIngredients));
-        }}
-      >
+      <Button type="primary" size="medium" onClick={() => pushOrder()}>
         Оформить заказ
       </Button>
       {cartItemModalIsActive && (
