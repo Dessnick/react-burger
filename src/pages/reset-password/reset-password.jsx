@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import {
   Input,
@@ -14,18 +14,14 @@ import styles from './reset-password.module.css';
 
 function ResetPassword() {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { forgotAndResetPass, isLoggedIn, preLogged, error } =
+  const location = useLocation();
+  const { forgotPassSuccess, resetPassSuccess, isLoggedIn, error } =
     useSelector(authSelector);
 
   const [formData, setformData] = React.useState({
     password: '',
     token: '',
   });
-
-  const pathToRedirect = () => {
-    history.push('/login');
-  };
 
   const onChange = (evt) => {
     setformData({
@@ -37,15 +33,18 @@ function ResetPassword() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     dispatch(resetPassword(formData));
-    if (forgotAndResetPass) setTimeout(pathToRedirect, 2000);
   };
 
-  if (isLoggedIn && preLogged) {
+  if (!forgotPassSuccess) {
+    return <Redirect to="/forgot-password" />;
+  }
+
+  if (!isLoggedIn && resetPassSuccess) {
     return <Redirect to="/login" />;
   }
 
-  if (!isLoggedIn && !forgotAndResetPass) {
-    return <Redirect to="/forgot-password" />;
+  if (isLoggedIn) {
+    return <Redirect to={location?.state?.from || '/'} />;
   }
 
   return (

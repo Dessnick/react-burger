@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from '../reducers';
 
 const store = configureStore({
-  reducer: { ingredients: rootReducer },
+  reducer: rootReducer,
 });
 
 export default store;
