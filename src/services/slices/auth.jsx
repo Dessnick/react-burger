@@ -14,11 +14,13 @@ const initialState = {
     name: '',
   },
   successfulRegistration: false,
-  forgotAndResetPass: false,
   isLoggedIn: false,
   isUpdated: false,
   isLoaded: false,
   error: '',
+
+  forgotPassSuccess: false,
+  resetPassSuccess: false,
 };
 
 export const loginAuth = createAsyncThunk(
@@ -82,7 +84,7 @@ export const updateToken = createAsyncThunk(
 );
 
 export const getUser = createAsyncThunk(
-  'auth/getUserInfo',
+  'auth/getUser',
   async (token, { rejectWithValue }) => {
     try {
       if (getCookies('accessToken')) {
@@ -112,7 +114,7 @@ export const getUser = createAsyncThunk(
 );
 
 export const updateUser = createAsyncThunk(
-  'auth/updateUserInfo',
+  'auth/updateUser',
   async (form, { rejectWithValue }) => {
     try {
       if (getCookies('accessToken')) {
@@ -132,8 +134,8 @@ export const updateUser = createAsyncThunk(
         const result = await res.json();
         return result.user;
       }
-      await updateToken();
-      await getUser(form);
+      updateToken();
+      getUser(form);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
@@ -173,8 +175,8 @@ export const forgotPassword = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
-      return data;
+      const result = await res.json();
+      return result;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
@@ -220,7 +222,8 @@ const authSlice = createSlice({
     builder
       .addCase(loginAuth.pending, (state) => {
         state.isLoaded = false;
-        state.forgotAndResetPass = false;
+        state.forgotPassSuccess = false;
+        state.resetPassSuccess = false;
       })
       .addCase(loginAuth.fulfilled, (state, { payload }) => {
         state.isLoaded = true;
@@ -305,11 +308,11 @@ const authSlice = createSlice({
       })
       .addCase(forgotPassword.fulfilled, (state) => {
         state.isLoaded = true;
-        state.forgotAndResetPass = true;
+        state.forgotPassSuccess = true;
       })
       .addCase(forgotPassword.rejected, (state) => {
         state.error = 'Ошибка!';
-        state.forgotAndResetPass = false;
+        state.forgotPassSuccess = false;
       })
 
       .addCase(resetPassword.pending, (state) => {
@@ -317,11 +320,12 @@ const authSlice = createSlice({
       })
       .addCase(resetPassword.fulfilled, (state) => {
         state.isLoaded = true;
-        state.forgotAndResetPass = true;
+        state.resetPassSuccess = true;
       })
       .addCase(resetPassword.rejected, (state) => {
         state.isLoaded = false;
         state.error = 'Ошибка!';
+        state.resetPassSuccess = false;
       })
 
       .addCase(logout.fulfilled, (state) => {
@@ -338,7 +342,7 @@ const authSlice = createSlice({
   },
 });
 
-export const authSelector = (state) => state.ingredients.auth;
+export const authSelector = (state) => state.auth;
 
 export const { checkLogin, resetUpdateMessage, resetError } = authSlice.actions;
 
