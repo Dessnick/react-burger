@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
-import baseUrl from '../../utils/data';
+import { baseUrl } from '../../utils/constants';
 
 const initialState = {
   ingredients: [],

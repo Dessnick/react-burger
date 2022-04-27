@@ -3,7 +3,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getCookies, setCookies, deleteCookies } from '../../utils/cookies';
-import baseUrl from '../../utils/data';
+import { baseUrl } from '../../utils/constants';
 
 const EXPIRE_SECONDS = 1200;
 
