@@ -42,5 +42,5 @@ export const setCookies = (name, value, props) => {
 };
 
 export const deleteCookies = (name) => {
-  setCookies(name, null, { expires: -1 });
+  setCookies(name, null, { expires: -1, path: '/' });
 };
