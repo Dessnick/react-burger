@@ -2,10 +2,10 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getCookies, setCookies, deleteCookies } from '../../utils/cookies';
-import baseUrl from '../../utils/data';
 
-const EXPIRE_SECONDS = 1200;
+import { getCookies, setCookies, deleteCookies } from '../../utils/cookies';
+import checkResponseResult from '../../utils/checkData';
+import baseUrl from '../../utils/data';
 
 const initialState = {
   user: {
@@ -32,7 +32,7 @@ export const loginAuth = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      const result = await res.json();
+      const result = await checkResponseResult(res);
       return result;
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -51,7 +51,7 @@ export const registration = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      const result = await res.json();
+      const result = await checkResponseResult(res);
       return result;
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -73,7 +73,7 @@ export const updateToken = createAsyncThunk(
       if (res.status !== 200) {
         updateToken();
       }
-      const result = await res.json();
+      const result = await checkResponseResult(res);
       return result;
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -100,7 +100,7 @@ export const getUser = createAsyncThunk(
           redirect: 'follow',
           referrerPolicy: 'no-referrer',
         });
-        const result = await res.json();
+        const result = await checkResponseResult(res);
         return result;
       }
       updateToken();
@@ -108,6 +108,10 @@ export const getUser = createAsyncThunk(
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
+      if (e.message === 'Error status: 403') {
+        updateToken();
+        getUser();
+      }
       return rejectWithValue(e.message);
     }
   }
@@ -131,14 +135,18 @@ export const updateUser = createAsyncThunk(
           redirect: 'follow',
           referrerPolicy: 'no-referrer',
         });
-        const result = await res.json();
+        const result = await checkResponseResult(res);
         return result.user;
       }
       updateToken();
-      getUser(form);
+      updateUser();
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
+      if (e.message === 'Error status: 403') {
+        updateToken();
+        updateUser();
+      }
       return rejectWithValue(e.message);
     }
   }
@@ -156,7 +164,7 @@ export const logout = createAsyncThunk(
         },
         body: JSON.stringify({ token: getCookies('refreshToken') }),
       });
-      const result = await res.json();
+      const result = await checkResponseResult(res);
       return result;
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -194,7 +202,7 @@ export const resetPassword = createAsyncThunk(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      const result = await res.json();
+      const result = await checkResponseResult(res);
       return result;
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -233,7 +241,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
 
         setCookies('accessToken', payload.accessToken, {
-          expires: EXPIRE_SECONDS,
+          path: '/',
         });
         setCookies('refreshToken', payload.refreshToken);
       })
@@ -252,7 +260,7 @@ const authSlice = createSlice({
           : (state.successfulRegistration = false);
 
         setCookies('accessToken', payload.accessToken, {
-          expires: EXPIRE_SECONDS,
+          path: '/',
         });
         setCookies('refreshToken', payload.refreshToken);
       })
@@ -267,7 +275,7 @@ const authSlice = createSlice({
         deleteCookies('accessToken');
         deleteCookies('refreshToken');
         setCookies('accessToken', payload.accessToken, {
-          expires: EXPIRE_SECONDS,
+          path: '/',
         });
         setCookies('refreshToken', payload.refreshToken);
       })
