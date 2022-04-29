@@ -1,36 +1,89 @@
 import React from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  ingredientsSelector,
-  fetchIngredients,
-} from '../../services/slices/ingredientsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
+import {
+  Home,
+  Login,
+  Profile,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  IngredientPage,
+} from '../../pages';
+import Modal from '../modal/modal';
+import ProtectedRoute from '../protected-route/protected-route';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
-import styles from './app.module.css';
+import {
+  authSelector,
+  getUser,
+  updateToken,
+  checkLogin,
+} from '../../services/slices/auth';
+import { getCookies } from '../../utils/cookies';
 
 function App() {
   const dispatch = useDispatch();
-  const { isLoaded, hasError } = useSelector(ingredientsSelector);
+
+  const { isLoggedIn } = useSelector(authSelector);
+  const location = useLocation();
+  const history = useHistory();
+
+  const background = location.state && location.state.background;
+
+  const handleOnCloseModal = () => {
+    history.goBack();
+  };
+
   React.useEffect(() => {
     dispatch(fetchIngredients());
-  }, [dispatch]);
+    if (getCookies('refreshToken')) {
+      dispatch(getUser());
+      if (!isLoggedIn) {
+        dispatch(updateToken());
+        dispatch(getUser());
+      }
+    }
+    dispatch(checkLogin());
+  }, [dispatch, isLoggedIn]);
 
   return (
     <>
       <AppHeader />
-      {hasError && 'Ошибка загрузки'}
-      {isLoaded && (
-        <main className={styles.content}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
+      <Switch location={background || location}>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/login" exact>
+          <Login />
+        </Route>
+        <Route path="/register" exact>
+          <Register />
+        </Route>
+        <Route path="/forgot-password" exact>
+          <ForgotPassword />
+        </Route>
+        <Route path="/reset-password" exact>
+          <ResetPassword />
+        </Route>
+        <ProtectedRoute path="/profile" exact>
+          <Profile />
+        </ProtectedRoute>
+        <Route path="/ingredients/:id" exact>
+          <IngredientPage />
+        </Route>
+      </Switch>
+
+      {background && (
+        <Route path="/ingredients/:id">
+          <Modal onClose={handleOnCloseModal} title="Детали ингредиента">
+            <IngredientDetails />
+          </Modal>
+        </Route>
       )}
     </>
   );

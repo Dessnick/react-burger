@@ -1,26 +1,12 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import BurgerIngredient from '../burger-ingredient/burger-ingredient';
 
-import {
-  ingredientsSelector,
-  hideIngredientDetails,
-} from '../../services/slices/ingredientsSlice';
-
 import styles from './ingredient-list.module.css';
-
 import dataTypes from '../../utils/types';
 
 function IngredientList({ ingredientName, ingredientList, tabRef }) {
-  const { ingredientDetails, ingredientDetailsModalIsActive } =
-    useSelector(ingredientsSelector);
-
-  const dispatch = useDispatch();
-
   return (
     <div ref={tabRef}>
       <h2 className="text text_type_main-medium">{ingredientName}</h2>
@@ -30,14 +16,6 @@ function IngredientList({ ingredientName, ingredientList, tabRef }) {
           <BurgerIngredient ingredient={item} key={item._id} />
         ))}
       </ul>
-      {ingredientDetailsModalIsActive && (
-        <Modal
-          title="Детали ингредиента"
-          onClose={() => dispatch(hideIngredientDetails())}
-        >
-          <IngredientDetails ingredient={ingredientDetails} />
-        </Modal>
-      )}
     </div>
   );
 }

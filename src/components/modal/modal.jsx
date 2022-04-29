@@ -8,7 +8,6 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 import styles from './modal.module.css';
 
 const Modal = (props) => {
-  const { onClose } = props;
   React.useEffect(() => {
     const handleEscClose = (evt) => {
       if (evt.key === 'Escape') {
@@ -16,11 +15,11 @@ const Modal = (props) => {
       }
     };
 
-    document.addEventListener('keydown', handleEscClose, false);
+    window.addEventListener('keydown', handleEscClose, false);
     return () => {
-      document.removeEventListener('keydown', handleEscClose, false);
+      window.removeEventListener('keydown', handleEscClose, false);
     };
-  }, [onClose, props]);
+  }, [props, props.onClose]);
 
   return ReactDOM.createPortal(
     <>

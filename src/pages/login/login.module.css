@@ -1,0 +1,46 @@
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.form {
+  min-width: 480px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.form > div {
+  width: 100%;
+}
+
+.form > div > div {
+  width: 100%;
+}
+
+.line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  color: #4c4cff;
+}
+
+.link:hover {
+  color: #3e3ef5;
+}
+
+.error {
+  color: #990000;
+  text-align: center;
+}

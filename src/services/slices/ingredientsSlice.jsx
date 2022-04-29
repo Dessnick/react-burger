@@ -142,7 +142,7 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const ingredientsSelector = (state) => state.ingredients.ingredients;
+export const ingredientsSelector = (state) => state.ingredients;
 
 export const {
   showIngredientDetails,
